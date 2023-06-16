@@ -80,47 +80,50 @@
         :newinsudspro
         Player: What features does SUDS Pro have over standard SUDS?
         Manny: Lots of things! You can perform <Em>camera transitions</>, interact with <Em>characters</> and <Em>camera effects</>, play <Em>cutscenes</> and more!
-            :newinsudsprochoices
-            * Camera Transitions
-                Player: Tell me more about camera transitions.
-                Manny: When you're running dialogue you'll want to cut between cameras, and perhaps fade and/or smoothly transition as well.
-                [event CameraCut `CameraTransitions`]
-                Manny: You should head over the <Em>Camera Transition Table</> to see the full range of features; but actually we've been using one of them already!
-                Player: We have?
-                Manny: Yes! Notice how the camera has been <Em>switching back and forth</> between over-the-shoulder cameras as we talk to each other?
-                Player: Oh yeah, like right now!
-                Manny: Yep - that's actually happening automatically due to default camera cuts; but you'll learn more about that over at the nearby table if you want.
-                [goto newinsudsprochoices]
-            * Characters
-                Player: What's this about <Em>characters</>?
-                Manny: You're almost always going to have actors in the scene that represent <Em>characters</> in your dialogue. <Em>SUDS Pro</> has special functions for interacting with them from your dialogue script.
-                Manny: It might be <Em>moving</> characters around, triggering <Em>animations</>, or changing properties on character actors. 
-                [event CameraCut `Characters`]
-                Manny: There's more information over at the <Em>Characters table</> over there.
-            * Camera Effects
-                Player: What about camera effects?
-                Manny: SUDS Pro can add camera <Em>shakes, fades, pans, dollys, zooms</> and other effects just by asking for them in the script.
-                [event CameraCut `CameraEffects`]
-                Manny: Head over to the camera effects table for a full demo.
-                [goto newinsudsprochoices]
-            * Cutscenes
-                Player: You mentioned cutscenes?
-                Manny: Yes, so you can run and control cutscenes, or <Em>Level Sequences</> as Unreal calls them, directly from your dialogue script.
-                [event CameraCut `Cutscenes`]
-                Manny: More details are available over at the cutscenes demo table.
-                [goto newinsudsprochoices]
-            * Voiced Dialogue
-                Player: Is it possible to use <Em>voiced</> dialogue with SUDS Pro?
-                Manny: Although SUDS Pro is primarily a text based dialogue system, it can generate <Em>voice assets</> for you as well, so you can add VO.
-                Manny: You still script the dialogue as text, but SUDS can generate <Em>Dialogue Voice</> and <Em>Dialogue Wave</> assets for you to add sounds to later.
-                [event CameraCut `VoicedDialogue`]
-                Manny: Head over to the voiced dialogue table for more information.
-                [goto newinsudsprochoices]
-            * About Basic SUDS
-                [goto basicsuds]
-            * Back
-                Player: Let's talk about something else.
-                [goto sudsorsudspro]
+        :newinsudsprochoices
+        * Camera Transitions
+            Player: Tell me more about camera transitions.
+            Manny: When you're running dialogue you'll want to cut between cameras, and perhaps fade and/or smoothly transition as well.
+            [event CameraCut `CameraTransitions`]
+            Manny: You should head over the <Em>Camera Transition Table</> to see the full range of features; but actually we've been using one of them already!
+            Player: We have?
+            Manny: Yes! Notice how the camera has been <Em>switching back and forth</> between over-the-shoulder cameras as we talk to each other?
+            Player: Oh yeah, like right now!
+            Manny: Yep - that's actually happening automatically due to default camera cuts; but you'll learn more about that over at the nearby table if you want.
+            [goto newinsudsprochoices]
+        * Characters
+            Player: What's this about <Em>characters</>?
+            Manny: You're almost always going to have actors in the scene that represent <Em>characters</> in your dialogue. <Em>SUDS Pro</> has special functions for interacting with them from your dialogue script.
+            Manny: It might be <Em>moving</> characters around, triggering <Em>animations</>, or changing properties on character actors. 
+            [event CameraCut `Characters`]
+            Manny: There's more information over at the <Em>Characters table</> over there.
+        * Camera Effects
+            Player: What about camera effects?
+            Manny: SUDS Pro can add camera <Em>shakes, fades, pans, dollys, zooms</> and other effects just by asking for them in the script.
+            [event CameraCut `CameraEffects`]
+            Manny: Head over to the camera effects table for a full demo.
+            [goto newinsudsprochoices]
+        * Cutscenes
+            Player: You mentioned cutscenes?
+            Manny: Yes, so you can run and control cutscenes, or <Em>Level Sequences</> as Unreal calls them, directly from your dialogue script.
+            [event CameraCut `Cutscenes`]
+            Manny: More details are available over at the cutscenes demo table.
+            [goto newinsudsprochoices]
+        * Voiced Dialogue
+            Player: Is it possible to use <Em>voiced</> dialogue with SUDS Pro?
+            Manny: Although SUDS Pro is primarily a text based dialogue system, it can generate <Em>voice assets</> for you as well, so you can add VO.
+            Manny: You still script the dialogue as text, but SUDS can generate <Em>Dialogue Voice</> and <Em>Dialogue Wave</> assets for you to add sounds to later.
+            [event CameraCut `VoicedDialogue`]
+            Manny: Head over to the voiced dialogue table for more information.
+            [goto newinsudsprochoices]
+        * About Basic SUDS
+            [goto basicsuds]
+        * Back
+            Player: Let's talk about something else.
+            [goto sudsorsudspro]
+    * Back
+        Player: Let's talk about something else.
+        [goto mainchoices]
 * SUDS vs SUDS Pro
     Player: Wait, if this is <Em>SUDS Pro</>, what is <Em>SUDS</>?
     Manny: <Em>SUDS</> is an open source dialogue system which <Em>SUDS Pro</> extends. We're both written by the same author (the 'S' stands for 'Steve')!
