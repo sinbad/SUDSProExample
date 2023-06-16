@@ -9,7 +9,7 @@ So even though this example project is Blueprint-only, it does need to build thi
 plugin. If you want to skip this step, download a pre-built example
  (Windows only).
 
- [Download Prebuilt Example]()
+ [Download Prebuilt Example](https://github.com/sinbad/SUDSProExample/releases)
 
 ## Building From Source
 
