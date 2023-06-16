@@ -115,3 +115,5 @@ MediaSrc/Textures/SnookerRoom/PanelledWallandDoor.resources/
 
 # Exclude UE5 project scope RiderLink
 Plugins/Developer/RiderLink/*
+
+SudsProExample*.zip
