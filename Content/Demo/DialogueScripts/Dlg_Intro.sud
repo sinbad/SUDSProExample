@@ -1,0 +1,151 @@
+===
+[set DefaultCameraShot.Player `OTSAtPlayer`]
+[set DefaultCameraShot.Manny `OTSAtManny1`]
+[set CameraHardCutInOutOfDialogue true]
+===
+
+[event FadeOut]
+[event CharacterMove `Player`, `PlayerMark`]
+[event FadeIn]
+[event WaitFade]
+[event CharacterAnim `Manny`, `Wave`]
+
+[if {RepeatVisit}]
+    Manny: Welcome back! What can I do for you?
+[else]
+    Manny: Hello, and welcome to the demo for <Em>SUDS Pro</>!
+    Manny: SUDS Pro is an advanced dialogue system, where you can write all your dialogue in convenient <Em>text scripts</>.
+    Manny: It also allows you to perform <Em>camera cuts</>, trigger <Em>animations</> on characters and cameras, play <Em>cutscenes</>, and more!
+    [set RepeatVisit true]
+    [event SequenceStart `TablePan`]
+    Manny: There are demos of individual features at the other tables in this area. I'm here to cover the basics.
+    # Sequence will pause waiting for user to proceed
+    [event SequenceResume]
+    [event WaitSequenceEnd]
+    Manny: What would you like to know?
+[endif]
+:mainchoices
+* Feature Summary
+    Player: How about a quick summary of the features of <Em>SUDS Pro</>?
+    Manny: Sure thing! Would you like to hear about the <Em>core dialogue scripting</> features (which are common to SUDS, if you've already used that), or what's been added in <Em>SUDS Pro</>?
+    :sudsorsudspro
+    * Core Dialogue
+        :basicsuds
+        Manny: OK, let's talk about how dialogue works in SUDS.
+        Manny: Firstly, you write all your dialogue in <Em>text scripts</>, with the extension <Em>".sud"</>. 
+        Manny: It's a special <Em>text format</> that allows you to write all your lines, choices, flow control (including conditional branching), variable state etc in one place. 
+        Manny: You communicate with other objects in the scene by making them <Em>Participants</> in the dialogue. That can be characters, or other helper objects.
+        :basicschoices
+        * Why Text Scripts?
+            Player: Why <Em>text</>? Why not a snazzy graphical interface, like a graph or something?
+            Manny: When you write a <Em>non-trivial</> amount of dialogue, plain text is simply <Em>easier and faster</> to write and review. 
+            Manny: Reading back a <Em>text script</> is much simpler than finding things in a large graph, and <Em>source control</> handles it much better.  <Em>Diffs</> are much easier to understand. 
+            Manny: Text is a much more <Em>natural and productive</> script writing interface than visual graphs, once you get beyond very simple things. 
+            [goto basicschoices]
+        * Participants
+            Player: Please explain what <Em>Participants</> are.
+            Manny: A <Em>Participant</> is any object that needs to interact with a running dialogue. That might mean providing variables, or receiving events.
+            Manny: You can make any object a participant in the dialogue, but <Em>SUDS Pro</> introduces some extra interfaces for doing easy integrations with cameras and characters.
+            [goto basicschoices]
+        * Choices
+            Player: What do you mean by <Em>choices</>?
+            Manny: Those buttons you're clicking on the right are <Em>choices</>, player-chosen <Em>branches</> in the dialogue.
+            Manny: The SUDS text format has full support for unlimited branching of the dialogue via <Em>choices</>. The documentation has the specifics of how you do this.
+            [goto basicschoices]
+        * Flow Control
+            Player: What is <Em>flow control</>?
+            Manny: Sometimes you want dialogue to <Em>loop</>, <Em>jump</> to other places in the script, or even <Em>conditionally include/exclude</> things. 
+            Manny: For example this subsection <Em>loops</> around until you choose to go elsewhere. This is a simple form of <Em>flow control</>.
+            Manny: You can jump the dialogue to other places with <Em>goto</>, re-use sections with <Em>gosub</>, and do things conditionally with <Em>if</>.
+            Manny: Together with player <Em>choices</>, you can create quite complex dialogue with SUDS!
+            [goto basicschoices]
+        * Variables
+            Player: You mentioned <Em>variable state</>, what's that?
+            Manny: All dialogues can have <Em>state</>, which is a list of named values we call <Em>variables</>.
+            Manny: This is to allow you to change how the dialogue behaves depending on what has happened before, or to substitute values into the scripted lines.
+            Manny: Anything can set or retrieve variables from a dialogue, but you'll probably most likely do it from <Em>Participants</>. You can either set variables up-front, or reactively as variables are requested.
+            Manny: You can also save and restore the state of dialogue so that changes persist over multiple conversations, and across save games.
+            [goto basicschoices]
+        * Importing Scripts
+            Player: So how does that text get into <Em>Unreal</>?
+            Manny: Unreal can import <Em>.sud</> files as dialogue script assets. You can double-click these to test the dialogue and see how it flows in practice.
+            Manny: If you want, you can go to <Em>Content > Demo > DialogueScripts</> and double-click on this dialogue, <Em>Dlg_Intro</> to run it manually instead of in the demo here.
+            [goto basicschoices]
+        * New In SUDS Pro
+            [goto newinsudspro]
+        * Back
+            Player: Let's talk about something else.
+            [goto mainchoices]
+    * New In SUDS Pro
+        :newinsudspro
+        Player: What features does SUDS Pro have over standard SUDS?
+        Manny: Lots of things! You can perform <Em>camera transitions</>, interact with <Em>characters</> and <Em>camera effects</>, play <Em>cutscenes</> and more!
+            :newinsudsprochoices
+            * Camera Transitions
+                Player: Tell me more about camera transitions.
+                Manny: When you're running dialogue you'll want to cut between cameras, and perhaps fade and/or smoothly transition as well.
+                [event CameraCut `CameraTransitions`]
+                Manny: You should head over the <Em>Camera Transition Table</> to see the full range of features; but actually we've been using one of them already!
+                Player: We have?
+                Manny: Yes! Notice how the camera has been <Em>switching back and forth</> between over-the-shoulder cameras as we talk to each other?
+                Player: Oh yeah, like right now!
+                Manny: Yep - that's actually happening automatically due to default camera cuts; but you'll learn more about that over at the nearby table if you want.
+                [goto newinsudsprochoices]
+            * Characters
+                Player: What's this about <Em>characters</>?
+                Manny: You're almost always going to have actors in the scene that represent <Em>characters</> in your dialogue. <Em>SUDS Pro</> has special functions for interacting with them from your dialogue script.
+                Manny: It might be <Em>moving</> characters around, triggering <Em>animations</>, or changing properties on character actors. 
+                [event CameraCut `Characters`]
+                Manny: There's more information over at the <Em>Characters table</> over there.
+            * Camera Effects
+                Player: What about camera effects?
+                Manny: SUDS Pro can add camera <Em>shakes, fades, pans, dollys, zooms</> and other effects just by asking for them in the script.
+                [event CameraCut `CameraEffects`]
+                Manny: Head over to the camera effects table for a full demo.
+                [goto newinsudsprochoices]
+            * Cutscenes
+                Player: You mentioned cutscenes?
+                Manny: Yes, so you can run and control cutscenes, or <Em>Level Sequences</> as Unreal calls them, directly from your dialogue script.
+                [event CameraCut `Cutscenes`]
+                Manny: More details are available over at the cutscenes demo table.
+                [goto newinsudsprochoices]
+            * Voiced Dialogue
+                Player: Is it possible to use <Em>voiced</> dialogue with SUDS Pro?
+                Manny: Although SUDS Pro is primarily a text based dialogue system, it can generate <Em>voice assets</> for you as well, so you can add VO.
+                Manny: You still script the dialogue as text, but SUDS can generate <Em>Dialogue Voice</> and <Em>Dialogue Wave</> assets for you to add sounds to later.
+                [event CameraCut `VoicedDialogue`]
+                Manny: Head over to the voiced dialogue table for more information.
+                [goto newinsudsprochoices]
+            * About Basic SUDS
+                [goto basicsuds]
+            * Back
+                Player: Let's talk about something else.
+                [goto sudsorsudspro]
+* SUDS vs SUDS Pro
+    Player: Wait, if this is <Em>SUDS Pro</>, what is <Em>SUDS</>?
+    Manny: <Em>SUDS</> is an open source dialogue system which <Em>SUDS Pro</> extends. We're both written by the same author (the 'S' stands for 'Steve')!
+    Player: So why <Em>SUDS Pro</>? Why not just add everything to <Em>SUDS</>?
+    Manny: SUDS is tightly focussed on just <Em>running dialogue scripts</> through a simple API. You can use it for basically anything that involves a sequence of lines and branches.
+    Manny: The intention is that people can integrate it however they like. <Em>SUDS Pro</> extends it for a specific kind of integration (for 3D character interactions).
+    Manny: <Em>SUDS Pro</> is a group of solutions to integrating SUDS with wider Unreal systems (like <Em>cameras</> and <Em>characters</>), but isn't the only way you could do it.
+    :sudsprochoices
+    * Why Not Open Source?
+        Player: So why not make <Em>SUDS Pro</> open source too? Why does it cost money?
+        Manny: Well, frankly, we have to eat! 
+        Manny: After publishing a lot of open source plugins, including <Em>SUDS</>, we thought some people might be interested in a more officially supported, somewhat extended version, conveniently pre-built.
+        Manny: As well as the extra features, you might think of it as a way to support the development of the open source libraries we make like SUDS; they're quite a lot of work!
+        [goto sudsprochoices]
+    * Other libraries
+        Player: What other libraries do you make?
+        Manny: Steve's Github lives at <Em>github.com/sinbad</>, where you'll find a lot of open source Unreal Engine libraries and tools, take a look!
+        Manny: This demo includes one of them, <Em>StevesUEHelpers</>, for some of the UI work. You'll also find <Em>SPUD</> for persistence/save games, and <Em>SUQS</> for quests, amongst other things.
+        [goto sudsprochoices]
+    * Ask about something else
+        Manny: What else can I help you with?
+        [goto mainchoices]
+        
+
+* Leave
+    Player: I'd better be going...
+    Manny: OK, see you later! Come talk to me again if you want to go over the introduction again.
+    [goto end]

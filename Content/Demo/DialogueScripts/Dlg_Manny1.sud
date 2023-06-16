@@ -1,0 +1,38 @@
+===
+[set DefaultCameraShot.Player `OTSAtPlayer`]
+[set DefaultCameraShot.Manny `OTSAtManny1`]
+[set CameraHardCutInOutOfDialogue true]
+===
+
+[event FadeOut]
+[event CharacterMove `Player`, `PlayerMark`]
+[event FadeIn]
+[event CharacterAnim `Manny`, `Wave`, 3]
+Manny: Hello, and welcome! How about we have a little questionnaire?
+[event CharacterAnimStop `Manny`]
+* Choice 1
+    Manny: Hello again!
+* Choice 2
+    Manny: Choice 2 right?
+
+#[set IsBoolTrue true]
+#[event CharacterPropSet `Manny`, `BoolVar`, {IsBoolTrue}]
+#[event CharacterPropSet `Manny`, `IntVar`, 42]
+#[event CharacterPropSet `Manny`, `NameVar`, `JustSomeName`]
+#[event CharacterNotify `Manny`, `SommatHappened`, 3.5, true]
+
+
+# Manny: Orbit time!
+# [event SequenceStart `CamOrbit`]
+# [event WaitSequenceNotify `MidSequencePause`]
+# Player: Oooh.
+# [event SequenceResume]
+# [event WaitSequenceEnd]
+
+
+Manny: And this is my favourite bush!
+Player: You have a favourite bush?  
+Manny: Sure, you don't?
+Player: Umm, I should probably be going.
+Manny: OK bye!
+[set CameraHardCutInOutOfDialogue false]

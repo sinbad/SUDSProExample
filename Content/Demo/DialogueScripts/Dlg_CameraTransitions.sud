@@ -1,0 +1,69 @@
+===
+[set DefaultCameraShot.Player `OTSAtPlayer`]
+[set DefaultCameraShot.Manny `OTSAtManny`]
+===
+
+[event FadeOut]
+[event CharacterMove `Player`, `PlayerMark`]
+[event FadeIn]
+[event WaitFade]
+
+Manny: Welcome! Wanna hear a bit more about <Em>Camera Cuts and Transitions</>?
+Manny: <Em>SUDS Pro</> lets you set up, and cut between, several dialogue cameras, all in the dialogue script, enabling you to have cinematic-looking dialogue camera shots.
+Manny: Once set up we can do <Em>Hard Cuts</>, <Em>Smooth Transitions</> and <Em>Camera Fades</>!
+:mainchoices
+  * Camera Set-up
+    Player: How do you set up dialogue cameras?
+    Manny: You might already be aware of the concept of <Em>Participants</> in a dialogue. These are objects that are involved in the dialogue somehow and listen for events, provide variables etc.
+    Manny: <Em>SUDS Pro</> introduces an interface called <Em>ISudsProCameraShotProvider</>. Any Participant that implements it can provide named cameras for use in the script.
+    Manny: In this demo, we use the <Em>dialogue trigger</> object as a participant, which has a map of named cine cameras that are pre-configured in the scene. 
+    Manny: Then, when the <Em>dialogue script</> requests a named <Em>camera shot</>, this object provides it from that map. You can edit the list in the editor.
+    Manny: Our cameras are pre-configured in the level, but you could also implement <Em>ISudsProCameraShotProvider</> with dynamically set up cameras if you wanted.
+    [goto mainchoices]
+  * Hard Cuts
+    Player: Tell me about hard camera cuts.
+    Manny: These are the simplest cuts, and in fact you're seeing them right now.
+    Player: I am?
+    Manny: Sure! We're hard-cutting back and forth between over-the-shoulder shots as each of us talks.
+    Player: Oh yeah!
+    Manny: We're actually using the <Em>default camera shots</> feature right now, which automatically cuts based on who is talking. But you can also cut manually with the <Em>CameraCut</> event... 
+    [event CameraCut `2Shot`]
+    Manny: Like <Em>this</>! When you pick another choice, we'll go back to the default shots, but we could hold this shot too if we wanted.
+    [goto mainchoices]
+  * Smooth Transitions
+    Player: What if I want to <Em>smoothly</> transition to another camera shot?
+    Manny: No problem! Once you dismiss this line, let's see how that works...
+    [event CameraTransition `Vista`, 2]
+    Manny: There we are! The <Em>CameraTransition</> event smoothly transitions to another camera shot, with a configurable <Em>duration</> and <Em>blending curve</>.
+    [event CameraTransition `OTSAtManny`, 2]
+    Manny: And now we're back. You can <Em>smoothly transition</> between any camera shot, although if you want more complex animation you should go visit the <Em>Cutscenes</> table opposite.
+    [goto mainchoices]
+
+  * Fading
+    Player: How does fading work?
+    Manny: If you need to obscure a cut, or moving a character to a mark, you can use <Em>fades</>. They're triggered using the <Em>FadeOut</> and <Em>FadeIn</> events.
+    Manny: As an example...
+    [event FadeOut]
+    [event CharacterMove `Manny`, `MannyAltMark`]
+    [event WaitFade]
+    [event CameraCut `OTSAtPlayer`]
+    [set CameraDefaultShotCutsDisabled true]
+    [event FadeIn]
+    [event WaitFade]
+    Manny: Boo! 
+    Manny: <Em>Fade outs</> are handy when characters need to be moved, but without having to animate them doing so in a cutscene.
+    Manny: OK, that's enough messing about, I'll go back.
+    [event FadeOut]
+    [event CharacterMove `Manny`, `MannyOrigMark`]
+    [event WaitFade]
+    [set CameraDefaultShotCutsDisabled false]
+    [event FadeIn]
+    [event WaitFade]
+    Manny: Perfect. Anything else I can do for you?
+    [goto mainchoices]
+
+  * Leave
+    Manny: Later! Oo, actually as a bonus we're going to transition smoothly out to the regular 3rd person camera too...
+    [set CameraExitSmoothTransition true]
+    [goto end]
+

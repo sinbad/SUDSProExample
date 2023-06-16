@@ -1,0 +1,130 @@
+===
+[set DefaultCameraShot.Player `OTSAtPlayer`]
+[set DefaultCameraShot.Manny `OTSAtManny`]
+===
+
+[event FadeOut]
+[event CharacterMove `Player`, `PlayerMark`]
+[event FadeIn]
+[event WaitFade]
+
+Manny: Welcome to the <Em>Camera Effects</> table!
+Player: What kind of camera effects can <Em>SUDS Pro</> do?
+Manny: You can request <Em>camera shakes</>, <Em>fades</> and <Em>incidental animations</> like zooms, dollys and more.
+Manny: What would you like to know more about?
+:mainchoices
+    * Camera Shake
+        Player: How do I use camera shake?
+        Manny: You trigger camera shake using the <Em>CameraShake</> event, which if not given any arguments instigates the default camera shake.
+        [event CameraShake]
+        Manny: This is what it looks like!
+        Player: How do I define what kind of shake it is?
+        Manny: Unreal has <EM>Camera Shake assets</> which define what the shake looks like, and SUDS Pro comes with a default one.
+        Manny: You can create your own <Em>Camera Shake assets</>, and set a default one in your <Em>project settings</>. 
+        Manny: You can also specify a specific camera shake asset in the arguments to the CameraShake event, as well as tweaking the <Em>magnitude</>.
+        Manny: Camera shakes often finish on their own, but if you want to cut one short, or use an infinite looping one, you can explicitly stop it using the <Em>StopCameraShake</> event.
+        [goto mainchoices]
+    * Camera Fades
+        Player: Tell me more about camera fades.
+        [event FadeOut 3]
+        Manny: Well, let me think a moment...
+        [event WaitSeconds 1]
+        [event FadeIn 1]
+        [event WaitAll]
+        Manny: See what I did there? You do this with the <Em>FadeOut</> and <Em>FadeIn</> events. I also put a little <Em>Wait</> in between, you know, for dramatic effect.
+        Manny: You can change the fade colour, speed, and also whether the audio is faded or not as well. 
+        [event FadeOut 2, `Red`]
+        Manny: Here's a red fade!
+        [event WaitSeconds 1]
+        [event FadeIn 1, `Red`]
+        [event WaitAll]
+        Manny: You can use fades to hide transitions or just for effect.
+        [goto mainchoices]
+
+    * Camera Animations
+        Player: Incidental animations? What are those?
+        Manny: Sometimes you want to add a little <Em>motion</> to your dialogue cameras, to give things a little more dynamism. 
+        Manny: While you can use full <Em>cutscenes</> (see my colleague's table to your left), often you just want the camera to move a <Em>little bit</>, to get the effect you want; having to make a whole cutscene is too much work for that.
+        Player: What kind of animations are possible?
+        Manny: The main camera motions are <Em>Push In / Pull Out</>, <Em>Zoom</>, <Em>Pan</>, <Em>Tilt</>, <Em>Roll</>, <Em>Dolly</> and <Em>Boom</>. 
+        Manny: All of them can be customised with a <Em>duration</>, <Em>start and end deltas</> from the usual camera position, and <Em>blending curves</> if you want. 
+        Manny: You can also <Em>combine</> multiple animations, e.g. a Push In and a Zoom to create the famous "Jaws / Vertigo DollyZoom" effect.
+        :camerachoices
+        Manny: Pick an effect to see:
+            * Push In
+                Player: Let's see a <Em>Push In</>.
+                # we need to explicitly cut, since animations are reset on cuts & default cut will come after it
+                [event CameraCut `OTSAtManny`]
+                [event CameraPushInOut -50, 50, 3]
+                Manny: OK, here we go! "Pushing in" the camera gives a sense of building tension, or increasing focus on the character you're looking at. You can also go in the reverse direction; it's all done with the  <Em>CameraPushInOut</> event.
+                [goto camerachoices]
+            * Zoom
+                Player: Let's see a <Em>Zoom</>.
+                [event CameraCut `OTSAtManny`]
+                [event CameraZoom 0, -25, 4, `CubicOut`]
+                Manny: Sure thing boss! Here's a <Em>zoom</> into my face via the <Em>CameraZoom</> event! This time the blending curve is <Em>CubicOut</> instead of the default.
+                [goto camerachoices]
+            * Dolly
+                Player: How about a Dolly?
+                [event FadeOut 0.5]
+                [event WaitFade]
+                [event CameraCut `OTSAtManny`]
+                [event CameraDolly -100, 0, 7, `CubicOut`]
+                [event FadeIn 3]
+                Manny: Dollying is a lateral camera motion, which you ask for with the <Em>CameraDolly</> event. Often it works well when combined with a fade to give a cinematic feeling effect.
+                [goto camerachoices]
+            * Boom
+                Player: What is a Boom movement?
+                [event FadeOut 0.5]
+                [event WaitFade]
+                [event CameraCut `OTSAtManny`]
+                [event CameraBoom 100, 0, 7, `CubicOut`]
+                [event FadeIn 3]
+                Manny: A Boom movement, invoked with the <Em>CameraBoom</> event, is named after the crane that usually does it, it's a vertical movement of the camera. Like this!
+                [goto camerachoices]
+            * Pan
+                Player: Show me a Pan motion.
+                [event CameraCut `OTSAtManny`]
+                [event CameraPan -90, 0, 1, `ExpoInOut`]
+                Manny: OK, a Pan is a rotation of the camera around the Z axis, via the <Em>CameraPan</> event. This example is a <Em>Whip Pan</> because it was a fast pan (Wes Anderson uses these a lot).
+                Manny: By default it pans around the <Em>global Z</> axis, in order to not introduce any extra roll to the camera. You can however request a pan around the camera's own local Z axis, via the <Em>CameraPanLocal</> event if you wish.
+                [goto camerachoices]
+
+            * Tilt
+                Player: Let's see what a Tilt looks like.
+                [event CameraCut `OTSAtManny`]
+                [event CameraTilt -80, 0, 5]
+                Manny: A <Em>Tilt</> is a rotation around the camera's local right hand axis, with the <Em>CameraTilt</> event. You might also think of it as a change in pitch, although Tilt is the cinematic term.
+                [goto camerachoices]
+            * Roll
+                Player: Let's see what a Roll looks like.
+                [event CameraCut `OTSAtManny`]
+                [event CameraRoll 0, 360, 10]
+                Manny: A camera <Em>Roll</> is a rotation around the camera's local facing axis, which you trigger with the <Em>CameraRoll</> event. Whee!
+                [goto camerachoices]
+            * Combining Animations
+                Player: Can you <Em>combine</> multiple animations?
+                Manny: Why yes! All of the camera animations run <Em>in parallel</> unless separated by speaker lines or Wait commands, so if you request two of them, they will both run at the same time. This is how the <Em>DollyZoom</> effect works.
+                [event CameraCut `OTSAtManny`]
+                [event CameraZoom 30, -15, 1.5, `BounceOut`]
+                [event CameraRoll 0, 30, 0.5]
+                # TODO: replace this with something which only delays animation not speaker line
+                [event WaitSeconds 0.5]
+                [event CameraRoll 20, -10, 0.5]
+                Manny: Here's something crazy as an example!
+                [goto camerachoices]
+            * DollyZoom
+                Player: What's a DollyZoom?
+                [event CameraCut `OTSAtManny`]
+                [event CameraPushInOut 50, 200, 3]
+                [event CameraZoom 0, 20, 3]
+                Manny: It's that effect from Jaws and Vertigo, where you combine a Push In with a Zoom out, to make the subject get larger in the frame but the background drops away at the same time.
+                [goto camerachoices]
+            * Back
+                Player: Let's talk about something else.
+                [goto mainchoices]
+
+    * Leave
+        [event CharacterAnim `Manny`, `Wave`]
+        Manny: Bye!
+        [goto end]

@@ -1,0 +1,32 @@
+===
+[set DefaultCameraShot.Player `OTSAtPlayer`]
+[set DefaultCameraShot.Manny `OTSAtManny`]
+===
+
+[event FadeOut]
+[event WaitFade]
+[event CharacterMove `Player`, `PlayerMark`]
+# Just to establish the camera to return to so we can smoothly come back
+[event CameraCut `OTSAtManny`]
+[event SequenceStart `Intro`, true]
+[event WaitSequenceEnd]
+
+Manny: Welcome to the <Em>Cutscenes</> table!
+Manny: SUDS Pro can play cutscenes, which are known in Unreal as <Em>Level Sequences</>.
+You just saw one in the intro there.
+Manny: <Em>Sequences</> can be played in <Em>parallel</> to dialogue, and you can synchronise between the two. Here's a demo!
+[event SequenceStart `CutsceneDemo`, false]
+Manny: OK, we've now <Em>started a sequence</>. It will continue to run and we can display multiple lines of dialogue in parallel.
+Manny: What if we want to <Em>delay</> the display of a line of dialogue until a point in the sequence? We can use events for that; the next dialogue line <Em>won't appear</> until our camera reaches the Intro table.
+[event WaitSequenceNotify `ArrivedAtIntroTable`]
+Manny: OK we've seen the Intro table! Dialogue can continue now.
+Manny: So that's how to make <Em>dialogue wait</> for a point in the <Em>sequence</>, but since they run in <Em>parallel</>, what if we want to make the <Em>sequence wait</> for dialogue?
+Manny: A sequence can <Em>pause itself</> and only <Em>resume</> when the dialogue script says so. This way you can <Em>sync dialogue beats with cutscenes</>.
+Manny: Our sequence is going to <Em>return to the cutscene table</>, and when it does, it will pause until the corresponding line is clicked through. Here we go...
+[event WaitSequenceNotify `ArrivedBack`]
+Manny: We arrived! The sequence is now paused, and will resume when you click through this dialogue line.
+[event SequenceResume]
+Manny: Great! Now we're going to wait for the end of the sequence before finishing our dialogue.
+[event WaitSequenceEnd]
+Manny: And we're done! See the documentation for the full details of the things you can do with sequences, but for now I think that'll do. Bye!
+

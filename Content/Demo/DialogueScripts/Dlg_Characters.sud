@@ -1,0 +1,71 @@
+===
+[set DefaultCameraShot.Player `OTSAtPlayer`]
+[set DefaultCameraShot.Manny `OTSAtManny`]
+===
+
+[event FadeOut]
+[event CharacterMove `Player`, `PlayerMark`]
+[event FadeIn]
+[event WaitFade]
+[event CharacterAnim `Manny`, `Yawn`]
+Manny: (stretching)
+[event WaitCharacter `Manny`]
+
+Manny: Oh...er. sorry about that. Um, welcome to the <Em>Characters</> table!
+Manny: <Em>SUDS Pro</> allows you to interact with characters from your dialogue script, including <Em>moving characters</>, <Em>triggering animations</>, <Em>setting properties</> and more.
+  :mainchoices
+  * What is a Character?
+    Player: I kow Unreal has a concept of a Character, is this the same?
+    Manny: No; in this context we're talking about a <Em>character in the dialogue</> rather than an Unreal Character, which is more about movement. 
+    Manny: An Unreal character can totally be a SUDS Pro Character, but a SUDS Pro Character doesn't have to be an Unreal Character. Hope that makes sense.
+    Manny: A SUDS Pro Character is any object that is a <Em>Participant</> in the dialogue and implements <Em>ISudsProCharacter</>. It can be any class otherwise.
+    [goto mainchoices]
+  * Moving Characters
+    Player: Why would you want to <Em>move characters</>?
+    Manny: Well, you probably want to set up nicely framed <Em>camera shots</> for your dialogue, but your characters might not be in the right spot when the dialogue is started.
+    Manny: You probably want characters to be <Em>facing</> each other, and be <Em>framed properly</> by the camera shots you want to use. 
+    Manny: While you could set the camera & characters up <Em>procedurally</> to adapt to the current situation, it's often more desirable to craft these shots manually so you know exactly how it's going to look.
+    Manny: So to accommodate these predefined camera shots, it's better to move characters into position. We call these positions <Em>"Marks"</>.
+    Player: Oh, like in the movies? Actors have to <Em>hit their marks</>, right?
+    Manny: Exactly! SUDS Pro lets you easily <Em>move characters to marks</>, so that everything looks good when the dialogue starts. You can hide the movement with fade outs if you want.
+    Manny: In fact, when you entered this dialogue that's exactly what happened! We have marks in the scene and use <Em>CharacterMove</> events to relocate the player.
+    
+    [goto mainchoices]
+
+  * Character Animations
+    Player: What's this about character <Em>animations</>?
+    [event CharacterAnim `Manny`, `Talk`, 3]
+    Manny: You can trigger character animations on any character that implements <Em>ISudsProCharacter</> and is a participant in this dialogue.
+    [event CharacterAnim `Manny`, `Cocky`, 3]
+    Manny: You do have to make your <Em>ISudsProCharacter</> translate animation names referred to in the script to an actual animation asset, but that's easily done.
+    [event CharacterAnim `Manny`, `Surprise`, 3]
+    Manny: Just take a look at my Blueprint for an example! Sorry,  I'm making all these gestures to illustrate a point, I don't normally act like this.
+    [goto mainchoices]
+
+  * Character Properties
+    Player: What did you mean by <Em>setting properties</>?
+    Manny: You might have already heard that dialogues have their own <Em>variable state</>, which can be read or set by anything, but is most often done by <Em>Participants</>.
+    Manny: Well, participants that also implement <Em>ISudsProCharacter</> can have their own properties directly set from the dialogue using <Em>SUDS Pro</>, which simplifies things a bit.
+    Manny: Using the <Em>CharacterPropSet</> event in a dialogue script, you can set properties on a character directly. You could use this for things like changing the character's mood, which might affect your idle animations even outside the dialogue.
+    Manny: It's pretty flexible and is the kind of thing you could do by setting dialogue variables and having those outside objects read them back, but that would be a bit more cumbersome.
+    Manny: Why don't you try it out right now? Go ahead, <Em>change my mood</>! Because it will change one of my actor properties, I'll carry on doing it even after the dialogue ends!
+      :propset
+      * Change Mood: Groove
+        [event CharacterPropSet `Manny`, `IdleVariant`, 1]
+        Manny: *grooves happily to music only he can hear*
+        [goto propset]
+      * Change Mood: Fighty
+        [event CharacterPropSet `Manny`, `IdleVariant`, 2]
+        Manny: Oi! You starting something pal?
+        [goto propset]
+      * Change Mood: Neutral
+        [event CharacterPropSet `Manny`, `IdleVariant`, 0]
+        Manny: Well, enough daydreaming I guess.
+        [goto propset]
+      * Back
+        Manny: Wanna hear about anything else?
+        [goto mainchoices]
+  * Leave
+    [event CharacterAnim `Manny`, `Wave`]
+    Manny: Bye!
+    [goto end]

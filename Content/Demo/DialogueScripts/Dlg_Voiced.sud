@@ -1,0 +1,36 @@
+===
+[set DefaultCameraShot.Player `OTSAtPlayer`]
+[set DefaultCameraShot.Manny `OTSAtManny`]
+===
+
+[event FadeOut]
+[event CharacterMove `Player`, `PlayerMark`]
+[event FadeIn]
+[event WaitFade]
+[event CharacterAnim `Manny`, `Wave`]
+
+
+Manny: Hello, welcome to the table dedicated to <Em>Voiced Dialogue</>!
+Player: Oh, how nice to <Em>hear your voice</>!
+Player: So, how does voiced dialogue work?
+:intro
+Manny: Well, to do VO you need additional <Em>voice assets</>, but we can <Em>generate templates</> of those on request from the original dialogue script.
+Manny: Of course, you'll need to add audio to these assets yourself later.
+    :choices
+    * Repeat Intro
+        [goto intro]
+    * Voice Assets
+        Player: Can you explain more about voice assets?
+        Manny: Sure! Unreal has two types of asset for voiced dialogue, and you can generate both of them from your scripts.
+        Manny: Firstly, <Em>Dialogue Voice</> assets represent speakers; one will be generated for every speaker in your dialogue script.
+        Manny: Second, <Em>Dialogue Wave</> assets are generated for every line in the script, and link to the sound waves containing the actual VO.
+        Manny: Many details in these assets are pre-populated from the scripts, but the rest needs to be added by you afterwards.
+        [goto choices]
+    * Playing Voice Assets
+        Player: So once you've added audio to the voice assets, how do you <Em>play</> them when running dialogue?
+        Manny: When a new line of dialogue becomes current, you can check whether it's voiced using the <Em>Is Current Line Voiced</> function. 
+        Manny: If it is, the simplest way to play the line is to call one of the <Em>Play Voiced Line</> functions on the dialogue itself. That's what we're doing right here!
+        [goto choices]
+    * Leave
+        [event CharacterAnim `Manny`, `Wave`]
+        Manny: Bye then!
