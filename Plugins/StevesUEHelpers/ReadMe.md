@@ -9,7 +9,12 @@ which makes a bunch of things better:
   * Focusable buttons, menu stacks, control prompts and more
 * [Input events](doc/Input.md)
   * Reliable notification when the player changes input method
-
+* [Debug visualisation](https://www.stevestreeting.com/2021/09/14/ue4-editor-visualisation-helper/)
+* [Better DataTable Row References](https://www.stevestreeting.com/2023/10/06/a-better-unreal-datatable-row-picker/)
+* [Light Flicker](doc/LightFlicker.md)
+* [Easing Functions](Source/StevesUEHelpers/Public/StevesEasings.h)
+* [Replicated Physics Actor](Source/StevesUEHelpers/Public/StevesReplicatedPhysicsActor.h)
+* Halton Sequence based random stream
 
 ## Examples
 
@@ -39,6 +44,10 @@ Alternatively you can download the ZIP of this repo and place it in
 Edit YourProject.Build.cs and do something similar to this:
 
 ```csharp
+
+using System.IO;
+using UnrealBuildTool;
+
 public class YourProject : ModuleRules
 {
 	private string PluginsPath

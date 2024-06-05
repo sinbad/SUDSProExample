@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StevesBalancedRandomStream.h"
 
 #include "StevesMathHelpers.h"
+#include "Components/PanelSlot.h"
 #include "StevesBPL.generated.h"
 
 class UPanelWidget;
@@ -50,8 +52,27 @@ public:
 	 * @param Parent The container widget
 	 * @param Child The child widget to add
 	 * @param AtIndex The index at which the new child should exist
+	 * @returns The slot the child was inserted at
 	 */
 	UFUNCTION(BlueprintCallable, Category="StevesUEHelpers|UI")
-	static void InsertChildWidgetAt(UPanelWidget* Parent, UWidget* Child, int AtIndex = 0);
-	
+	static UPanelSlot* InsertChildWidgetAt(UPanelWidget* Parent, UWidget* Child, int AtIndex = 0);
+
+	UFUNCTION(BlueprintPure, Category="StevesUEHelpers|Random", meta=(NativeMakeFunc))
+	static FStevesBalancedRandomStream MakeBalancedRandomStream(int64 Seed);
+
+	UFUNCTION(BlueprintCallable, Category="StevesUEHelpers|Random")
+	static float BalancedRandom(const FStevesBalancedRandomStream& Stream) { return Stream.Rand(); }
+
+	UFUNCTION(BlueprintCallable, Category="StevesUEHelpers|Random")
+	static FVector2D BalancedRandom2D(const FStevesBalancedRandomStream& Stream) { return Stream.Rand2D(); }
+
+	UFUNCTION(BlueprintCallable, Category="StevesUEHelpers|Random")
+	static FVector BalancedRandom3D(const FStevesBalancedRandomStream& Stream) { return Stream.Rand3D(); }
+
+	UFUNCTION(BlueprintCallable, Category="StevesUEHelpers|Random")
+	static FVector BalancedRandomVector(const FStevesBalancedRandomStream& Stream) { return Stream.RandUnitVector(); }
+
+	UFUNCTION(BlueprintCallable, Category="StevesUEHelpers|Random")
+	static FVector BalancedRandomPointInBox(const FStevesBalancedRandomStream& Stream, const FVector& Min, const FVector& Max) { return Stream.RandPointInBox(FBox(Min, Max)); }
+
 };

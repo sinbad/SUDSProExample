@@ -11,7 +11,12 @@ void UStevesBPL::SetWidgetFocus(UWidget* Widget)
 	SetWidgetFocusProperly(Widget);
 }
 
-void UStevesBPL::InsertChildWidgetAt(UPanelWidget* Parent, UWidget* Child, int AtIndex)
+UPanelSlot* UStevesBPL::InsertChildWidgetAt(UPanelWidget* Parent, UWidget* Child, int AtIndex)
 {
-	StevesUiHelpers::InsertChildWidgetAt(Parent, Child, AtIndex);
+	return StevesUiHelpers::InsertChildWidgetAt(Parent, Child, AtIndex);
+}
+
+FStevesBalancedRandomStream UStevesBPL::MakeBalancedRandomStream(int64 Seed)
+{
+	return FStevesBalancedRandomStream(Seed);
 }

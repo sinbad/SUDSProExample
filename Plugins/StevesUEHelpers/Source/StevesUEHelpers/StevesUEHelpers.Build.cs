@@ -37,7 +37,10 @@ public class StevesUEHelpers : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"RenderCore"
+				"RenderCore",
+				"PhysicsCore",
+				"Chaos",
+				"NavigationSystem"
 			}
 			);
 		
