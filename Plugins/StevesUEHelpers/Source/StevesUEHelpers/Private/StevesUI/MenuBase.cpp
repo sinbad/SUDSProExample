@@ -20,6 +20,7 @@ void UMenuBase::Close(bool bWasCancel)
         RemoveFromParent();
         PreviousFocusWidget.Reset();
     }
+    AfterClosed.Broadcast(this, bWasCancel);
 }
 
 void UMenuBase::AddedToStack(UMenuStack* Parent)
@@ -27,6 +28,7 @@ void UMenuBase::AddedToStack(UMenuStack* Parent)
     ParentStack = MakeWeakObjectPtr(Parent);
 
     Open(false);
+    OnAddedToStack(Parent);
 }
 
 
@@ -45,30 +47,45 @@ void UMenuBase::InputModeChanged(EInputMode OldMode, EInputMode NewMode)
     }
 }
 
+bool UMenuBase::IsTopOfStack() const
+{
+    if (ParentStack.IsValid())
+    {
+        return ParentStack->GetTopMenu() == this;
+    }
+
+    return true;
+}
+
 void UMenuBase::RemovedFromStack(UMenuStack* Parent)
 {
     // This works whether embedded or not
     RemoveFromParent();
     PreviousFocusWidget.Reset();
+    OnRemovedFromStack(Parent);
 }
 
-void UMenuBase::SupercededInStack()
+void UMenuBase::SupercededInStack(UMenuBase* ByMenu)
 {
     SavePreviousFocus();
     
     if (bEmbedInParentContainer)
-        RemoveFromParent();
+    {
+        if (bHideWhenSuperceded)
+            RemoveFromParent();
+    }
     else
     {
         if (bHideWhenSuperceded)
             SetVisibility(ESlateVisibility::Collapsed);
     }
+    OnSupercededInStack(ByMenu);
 }
 
 void UMenuBase::RegainedFocusInStack()
 {
     Open(true);
-    
+    OnRegainedFocusInStack();
 }
 
 void UMenuBase::EmbedInParent()
@@ -85,15 +102,16 @@ void UMenuBase::EmbedInParent()
 
 void UMenuBase::Open(bool bIsRegain)
 {
-    if (ParentStack.IsValid() && bEmbedInParentContainer)
+    if (ParentStack.IsValid() && bEmbedInParentContainer && bHideWhenSuperceded)
         EmbedInParent();
     else
         AddToViewport();
-    SetVisibility(ESlateVisibility::Visible);
+    SetVisibility(bBlockClicks ? ESlateVisibility::Visible : ESlateVisibility::SelfHitTestInvisible);
 
     auto PC = GetOwningPlayer();    
     switch (InputModeSetting)
     {
+    default:
     case EInputModeChange::DoNotChange:
         break;
     case EInputModeChange::UIOnly:
@@ -109,6 +127,7 @@ void UMenuBase::Open(bool bIsRegain)
 
     switch (MousePointerVisibility)
     {
+    default:
     case EMousePointerVisibilityChange::DoNotChange:
         break;
     case EMousePointerVisibilityChange::Visible:
@@ -121,6 +140,7 @@ void UMenuBase::Open(bool bIsRegain)
 
     switch (GamePauseSetting)
     {
+    default:
     case EGamePauseChange::DoNotChange:
         break;
     case EGamePauseChange::Paused:
@@ -133,4 +153,36 @@ void UMenuBase::Open(bool bIsRegain)
 
     TakeFocusIfDesired();
     
+}
+
+bool UMenuBase::RequestClose(bool bWasCancel)
+{
+    if (ValidateClose(bWasCancel))
+    {
+        Close(bWasCancel);
+        return true;
+    }
+    return false;
+}
+
+bool UMenuBase::ValidateClose_Implementation(bool bWasCancel)
+{
+    // Default always pass
+    return true;
+}
+
+void UMenuBase::OnSupercededInStack_Implementation(UMenuBase* ByMenu)
+{
+}
+
+void UMenuBase::OnRegainedFocusInStack_Implementation()
+{
+}
+
+void UMenuBase::OnAddedToStack_Implementation(UMenuStack* Parent)
+{
+}
+
+void UMenuBase::OnRemovedFromStack_Implementation(UMenuStack* Parent)
+{
 }

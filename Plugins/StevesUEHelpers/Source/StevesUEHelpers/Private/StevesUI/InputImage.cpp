@@ -127,7 +127,7 @@ void UInputImage::UpdateImage()
         
         if (Sprite)
         {
-            if (bHiddenBecauseBlank)
+            if (bHiddenBecauseBlank || bOverrideHiddenState)
             {
                 // Use Internal so as not to recurse back here
                 SetVisibilityInternal(OldVisibility);
@@ -154,8 +154,15 @@ void UInputImage::UpdateImage()
 
 void UInputImage::MarkImageDirty()
 {
-    bIsDirty = true;
-    DelayUpdate = 0.1f;
+    if (UpdateDelay > 0)
+    {
+        bIsDirty = true;
+        DelayUpdate = UpdateDelay;
+    }
+    else
+    {
+        UpdateImage();
+    }
 }
 
 // Tickables

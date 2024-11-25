@@ -95,6 +95,11 @@ void UMenuStack::ApplyInputModeChange(EInputModeChange Change) const
         ApplyInputModeChange(PreviousInputMode);
         break;
     }
+
+    if (Change != EInputModeChange::DoNotChange && bFlushOnInputModeChange)
+    {
+        PC->FlushPressedKeys();
+    }
 }
 
 void UMenuStack::ApplyMousePointerVisibility(EMousePointerVisibilityChange Change) const
@@ -149,7 +154,12 @@ bool UMenuStack::HandleKeyDownEvent(const FKeyEvent& InKeyEvent)
     if (BackKeys.Contains(Key))
     {
         // This is "Back"
-        PopMenu(true);
+        // Request close but allow veto
+        if (Menus.Num() > 0)
+        {
+            auto Top = Menus.Last();
+            Top->RequestClose(true);
+        }
         return true;
     }
     else if (InstantCloseKeys.Contains(Key))
@@ -194,7 +204,7 @@ void UMenuStack::PushMenuByObject(UMenuBase* NewMenu)
     if (Menus.Num() > 0)
     {
         auto Top = Menus.Last();
-        Top->SupercededInStack();
+        Top->SupercededInStack(NewMenu);
         // We keep this allocated, to restore later on back
     }
     Menus.Add(NewMenu);
@@ -257,6 +267,15 @@ void UMenuStack::RemoveFromParent()
     
     Super::RemoveFromParent();
 
+}
+
+UMenuBase* UMenuStack::GetTopMenu() const
+{
+    if (Menus.Num() > 0)
+    {
+        return Menus.Top();
+    }
+    return nullptr;
 }
 
 UMenuStack::UMenuStack()

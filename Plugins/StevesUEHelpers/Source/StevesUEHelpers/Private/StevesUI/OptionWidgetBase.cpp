@@ -150,7 +150,7 @@ void UOptionWidgetBase::SetFocusProperly_Implementation()
     if (GamepadVersion && GamepadVersion->IsVisible())
         GamepadVersion->SetFocus();
     else if (MouseUpButton && MouseDownButton)
-        MouseUpButton->GetIsEnabled() ? MouseUpButton->SetFocus() : MouseDownButton->SetFocus();
+        MouseUpButton->GetVisibility() == ESlateVisibility::Visible ? MouseUpButton->SetFocus() : MouseDownButton->SetFocus();
 }
 
 void UOptionWidgetBase::SetSelectedIndex(int NewIndex)
@@ -165,25 +165,41 @@ void UOptionWidgetBase::SetSelectedIndex(int NewIndex)
     if (GamepadText)
         GamepadText->SetText(NewText);
 
-    const bool CanDecrease = SelectedIndex > 0;
-    const bool CanIncrease = SelectedIndex < Options.Num() - 1;
-    if (MouseDownButton)
-        MouseDownButton->SetIsEnabled(CanDecrease);
-    if (MouseUpButton)
-        MouseUpButton->SetIsEnabled(CanIncrease);
-    if (GamepadDownImage)
-        GamepadDownImage->SetVisibility(CanDecrease ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    if (GamepadUpImage)
-        GamepadUpImage->SetVisibility(CanIncrease ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-
+    UpdateUpDownButtons();
+    
     if (bRaiseEvent)
         OnSelectedOptionChanged.Broadcast(this, SelectedIndex);
     
 }
 
+void UOptionWidgetBase::UpdateUpDownButtons()
+{
+    const bool CanDecrease = SelectedIndex > 0;
+    const bool CanIncrease = SelectedIndex < Options.Num() - 1;
+    if (MouseDownButton)
+        MouseDownButton->SetVisibility(CanDecrease ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    if (MouseUpButton)
+        MouseUpButton->SetVisibility(CanIncrease ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    if (GamepadDownImage)
+        GamepadDownImage->SetVisibility(CanDecrease ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    if (GamepadUpImage)
+        GamepadUpImage->SetVisibility(CanIncrease ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    
+}
+
+
 int UOptionWidgetBase::AddOption(FText Option)
 {
-    return Options.Add(Option);
+    const int Ret = Options.Add(Option);
+    if (GetSelectedIndex() == -1)
+    {
+        SetSelectedIndex(0);
+    }
+    else
+    {
+        UpdateUpDownButtons();
+    }
+    return Ret;
 }
 
 void UOptionWidgetBase::SetOptions(const TArray<FText>& InOptions, int NewSelectedIndex)

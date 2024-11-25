@@ -1,12 +1,12 @@
 ﻿
 #include "StevesSpringArmComponent.h"
+#include "VisualLogger/VisualLogger.h"
 #include "StevesUEHelpers.h"
 
 
 
-UStevesSpringArmComponent::UStevesSpringArmComponent()
+UStevesSpringArmComponent::UStevesSpringArmComponent(): bEnableSmoothCollisionAvoidance(1)
 {
-	
 }
 
 FVector UStevesSpringArmComponent::BlendLocations(const FVector& DesiredArmLocation,

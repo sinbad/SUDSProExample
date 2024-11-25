@@ -21,8 +21,13 @@ class STEVESUEHELPERS_API UMenuBase : public UFocusablePanel
 {
     GENERATED_BODY()
 public:
+	/// Raised just as the menu is closing
     UPROPERTY(BlueprintAssignable)
     FOnMenuClosed OnClosed;
+
+	/// Raised just after the menu has closed
+    UPROPERTY(BlueprintAssignable)
+    FOnMenuClosed AfterClosed;
     
 protected:
     UPROPERTY(BlueprintReadOnly)
@@ -39,10 +44,16 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Layout")
     bool bEmbedInParentContainer = true;
 
-    /// Whether to hide this menu when it's superceded by another in the stack. This property is only relevant
-    /// when bEmbedInParentContainer = false, since only one menu can be embedded at once.
+    /// Whether to hide this menu when it's superceded by another in the stack.
+    /// If you set this to "false" when bEmbedInParentContainer=true, then the superceding menu should have its
+    /// own bEmbedInParentContainer set to false in order to overlay on top of this one.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Behavior")
     bool bHideWhenSuperceded = true;
+
+	/// Whether this panel should block clicks itself (useful for preventing click-through).
+	/// Set to false if you want to be able to click through the panel to other elements.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Behavior")
+	bool bBlockClicks = true;
 
     /// How this menu should set the input mode when it becomes the top of the stack
     /// This can be useful if your menus have variable input settings between levels in the stack
@@ -59,6 +70,21 @@ protected:
 
     virtual void EmbedInParent();
 
+	UFUNCTION(BlueprintNativeEvent)
+	bool ValidateClose(bool bWasCancel);
+
+	/// Called when this menu is superceded by another menu being pushed on to this stack
+	UFUNCTION(BlueprintNativeEvent)
+	void OnSupercededInStack(UMenuBase* ByMenu);
+	/// Called when this menu is superceded by another menu being pushed on to this stack
+	UFUNCTION(BlueprintNativeEvent)
+	void OnRegainedFocusInStack();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnAddedToStack(UMenuStack* Parent);
+	UFUNCTION(BlueprintNativeEvent)
+	void OnRemovedFromStack(UMenuStack* Parent);
+
 public:
     
     /**
@@ -70,18 +96,32 @@ public:
     UFUNCTION(BlueprintCallable)
     void Open(bool bIsRegainedFocus = false); 
     /**
-     * @brief Close this menu.
+     * @brief Request this menu to close. The menu can veto this request.
+     * @param bWasCancel Set this to true if the reason for closure was a cancellation action
+     * @return True if the request was approved
+     */
+    UFUNCTION(BlueprintCallable)
+    bool RequestClose(bool bWasCancel);
+    /**
+     * @brief Close this menu. This ALWAYS closes the menu, if you want it to be able to veto it, call RequestClose
      * @param bWasCancel Set this to true if the reason for closure was a cancellation action
      */
     UFUNCTION(BlueprintCallable)
     void Close(bool bWasCancel);
+
+    
 
     TWeakObjectPtr<UMenuStack> GetParentStack() const { return ParentStack; }
     virtual bool IsRequestingFocus_Implementation() const override { return bRequestFocus; }
 
     void AddedToStack(UMenuStack* Parent);
     void RemovedFromStack(UMenuStack* Parent);
-    void SupercededInStack();
+    void SupercededInStack(UMenuBase* ByMenu);
     void RegainedFocusInStack();
     void InputModeChanged(EInputMode OldMode, EInputMode NewMode);
+
+	/// Return whether this menu is currently at the top of the menu stack
+	/// Note: if this menu is not owned by a stack, will always return true
+	UFUNCTION(BlueprintCallable)
+	bool IsTopOfStack() const;
 };

@@ -80,6 +80,10 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Behavior")
     EInputModeChange InputModeSettingOnOpen = EInputModeChange::DoNotChange;
 
+    /// When changing input mode, whether to flush pressed keys so we start fresh
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Behavior")
+    bool bFlushOnInputModeChange = false;
+
     /// How this stack should set the mouse pointer visibility when it opens (default no change)
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Behavior")
     EMousePointerVisibilityChange MousePointerVisibilityOnOpen = EMousePointerVisibilityChange::DoNotChange;
@@ -135,6 +139,9 @@ public:
     virtual void PopMenuIfTop(UMenuBase* UiMenuBase, bool bWasCancel);
     virtual void RemoveFromParent() override;
 
+    /// Return the menu which is currently top of the stack
+    UFUNCTION(BlueprintCallable)
+    UMenuBase* GetTopMenu() const;
 
     UMenuStack();
 
