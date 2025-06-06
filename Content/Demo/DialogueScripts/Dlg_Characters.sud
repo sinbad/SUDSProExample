@@ -65,6 +65,11 @@ Manny: <Em>SUDS Pro</> allows you to interact with characters from your dialogue
       * Back
         Manny: Wanna hear about anything else?
         [goto mainchoices]
+  * Who's that guy behind you?
+    [event CharacterAnim `MultiManny`, `Mini_Yawn`]
+    [event CharacterAnim `MultiManny`, `Surprise`]
+    Manny: Oh, never mind him.
+    [goto mainchoices]
   * Leave
     [event CharacterAnim `Manny`, `Wave`]
     Manny: Bye!

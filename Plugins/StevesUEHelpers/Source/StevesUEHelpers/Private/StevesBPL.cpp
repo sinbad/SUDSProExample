@@ -48,3 +48,44 @@ void UStevesBPL::UpdateStreaming(float DeltaTime, bool bBlockUntilDone)
 		SM.BlockTillAllRequestsFinished();
 	}
 }
+
+float UStevesBPL::GetPerceivedLuminance(const FLinearColor& InColour)
+{
+	// ITU BT.709
+	return
+		InColour.R * 0.2126f +
+		InColour.G * 0.7152f +
+		InColour.B * 0.0722f;
+}
+
+float UStevesBPL::GetPerceivedLuminance2(const FLinearColor& InColour)
+{
+	// ITU BT.601
+	return
+		InColour.R * 0.299f +
+		InColour.G * 0.587f +
+		InColour.B * 0.114f;
+}
+
+float UStevesBPL::HeadingAngle2D(const FVector2D& Dir)
+{
+	const FVector2D NormDir = Dir.GetSafeNormal();
+	float Angle = FMath::Acos(NormDir.X);
+
+	if(NormDir.Y < 0.0f)
+	{
+		Angle *= -1.0f;
+	}
+
+	return Angle;
+}
+
+float UStevesBPL::AngleBetween2D(const FVector2D& DirA, const FVector2D& DirB)
+{
+	const float HeadingA = HeadingAngle2D(DirA);
+	const float HeadingB = HeadingAngle2D(DirB);
+
+	// Get the shortest route
+	return FMath::FindDeltaAngleRadians(HeadingA, HeadingB);
+}
+

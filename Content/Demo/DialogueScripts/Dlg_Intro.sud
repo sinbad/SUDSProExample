@@ -148,7 +148,16 @@
         [goto mainchoices]
         
 
-* Leave
+* Leave Table
     Player: I'd better be going...
     Manny: OK, see you later! Come talk to me again if you want to go over the introduction again.
     [goto end]
+
+* Quit Demo
+    Manny: Are you sure you'd like to quit the demo?
+    * Yes
+      [event QuitDemo]
+      [goto end]
+    * No
+      Player: Actually, no.
+      [goto mainchoices]

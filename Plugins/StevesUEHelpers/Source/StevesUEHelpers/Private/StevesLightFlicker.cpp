@@ -8,9 +8,9 @@ TMap<EStevesLightFlickerPattern, FRichCurve> UStevesLightFlickerHelper::Curves;
 TMap<FString, FRichCurve> UStevesLightFlickerHelper::CustomCurves;
 FCriticalSection UStevesLightFlickerHelper::CriticalSection;
 
-// Quake lighting flicker functions
-// https://github.com/id-Software/Quake/blob/bf4ac424ce754894ac8f1dae6a3981954bc9852d/qw-qc/world.qc#L328-L372
-const TMap<EStevesLightFlickerPattern, FString> UStevesLightFlickerHelper::QuakeCurveSources {
+const TMap<EStevesLightFlickerPattern, FString> UStevesLightFlickerHelper::StandardPatterns {
+	// Quake lighting flicker functions
+	// https://github.com/id-Software/Quake/blob/bf4ac424ce754894ac8f1dae6a3981954bc9852d/qw-qc/world.qc#L328-L372
 	{ EStevesLightFlickerPattern::Flicker1, TEXT("mmnmmommommnonmmonqnmmo") },
 	{ EStevesLightFlickerPattern::SlowStrongPulse, TEXT("abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba") },
 	{ EStevesLightFlickerPattern::Candle1, TEXT("mmmmmaaaaammmmmaaaaaabcdefgabcdefg") },
@@ -22,6 +22,11 @@ const TMap<EStevesLightFlickerPattern, FString> UStevesLightFlickerHelper::Quake
 	{ EStevesLightFlickerPattern::SlowStrobe, TEXT("aaaaaaaazzzzzzzz") },
 	{ EStevesLightFlickerPattern::FlourescentFlicker, TEXT("mmamammmmammamamaaamammma") },
 	{ EStevesLightFlickerPattern::SlowPulseNoBlack, TEXT("abcdefghijklmnopqrrqponmlkjihgfedcba") },
+
+	/// Eniko's torch pattern from Kitsune Tails
+	{ EStevesLightFlickerPattern::Torch1, TEXT("mnkjcfcdafdehifkjlm") },
+	/// No black version of Torch1
+	{ EStevesLightFlickerPattern::Torch2, TEXT("mnkjcfcecfdehifkjlm") }
 };
 
 float UStevesLightFlickerHelper::EvaluateLightCurve(EStevesLightFlickerPattern CurveType, float Time)
@@ -59,7 +64,7 @@ const FRichCurve& UStevesLightFlickerHelper::GetLightCurve(const FString& CurveS
 
 void UStevesLightFlickerHelper::BuildCurve(EStevesLightFlickerPattern CurveType, FRichCurve& OutCurve)
 {
-	if (auto pTxt = QuakeCurveSources.Find(CurveType))
+	if (auto pTxt = StandardPatterns.Find(CurveType))
 	{
 		BuildCurve(*pTxt, OutCurve);
 	}
@@ -102,6 +107,11 @@ void UStevesLightFlickerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GenerateCurveAndPlay();
+}
+
+void UStevesLightFlickerComponent::GenerateCurveAndPlay()
+{
 	if (FlickerPattern == EStevesLightFlickerPattern::Custom)
 	{
 		Curve = &UStevesLightFlickerHelper::GetLightCurve(CustomFlickerPattern);
@@ -168,6 +178,20 @@ void UStevesLightFlickerComponent::TickComponent(float DeltaTime,
 		TimePos -= MaxTime;
 	}
 	ValueUpdate();
+}
+
+void UStevesLightFlickerComponent::SetFlickerPattern(EStevesLightFlickerPattern Pattern,
+	const FString& CustomPatternString)
+{
+	FlickerPattern = Pattern;
+	CustomFlickerPattern = CustomPatternString;
+	GenerateCurveAndPlay();
+}
+
+EStevesLightFlickerPattern UStevesLightFlickerComponent::GetFlickerPattern(FString& CustomString)
+{
+	CustomString = CustomFlickerPattern;
+	return FlickerPattern;
 }
 
 void UStevesLightFlickerComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

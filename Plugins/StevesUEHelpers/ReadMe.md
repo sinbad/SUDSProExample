@@ -15,7 +15,10 @@ which makes a bunch of things better:
 * [Easing Functions](Source/StevesUEHelpers/Public/StevesEasings.h)
 * [Replicated Physics Actor](Source/StevesUEHelpers/Public/StevesReplicatedPhysicsActor.h)
 * [Actor Pooling System](Source/StevesUEHelpers/Public/StevesPooledActorSystem.h)
-* Halton Sequence based random stream
+* [Random Tools](doc/Random.md) - Halton Sequence, Shuffle Bag
+* [Smooth Spring Arm Component](Source/StevesUEHelpers/Public/StevesSpringArmComponent.h)
+* [RTT Texture Pool](Source/StevesUEHelpers/Public/StevesTextureRenderTargetPool.h)
+* [Dynamic Navmesh volume](Source/StevesUEHelpers/Public/StevesDynamicNavMeshVolume.h)
 
 ## Examples
 
