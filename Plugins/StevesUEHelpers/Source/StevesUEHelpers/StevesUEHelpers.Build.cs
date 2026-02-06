@@ -29,7 +29,8 @@ public class StevesUEHelpers : ModuleRules
 				"Slate",
 				"SlateCore",
 				"UMG",
-				"Paper2D"
+				"Paper2D",
+				"DeveloperSettings"
 			}
 			);
 			
@@ -40,6 +41,7 @@ public class StevesUEHelpers : ModuleRules
 				"RenderCore",
 				"PhysicsCore",
 				"Chaos",
+				"ChaosCore",
 				"NavigationSystem"
 			}
 			);

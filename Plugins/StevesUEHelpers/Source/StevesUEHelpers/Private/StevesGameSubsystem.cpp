@@ -14,6 +14,11 @@
 #include "GameFramework/PlayerInput.h"
 #include "StevesUI/KeySprite.h"
 #include "StevesUI/StevesUI.h"
+#include "TimerManager.h"
+#include "AssetRegistry/AssetData.h"
+#include "Engine/Engine.h"
+#include "Engine/LocalPlayer.h"
+#include "UnrealClient.h"
 
 //PRAGMA_DISABLE_OPTIMIZATION
 
@@ -127,6 +132,33 @@ void UStevesGameSubsystem::RegisterInterestInEnhancedInputAction(const UInputAct
         }
     }
     
+}
+
+void UStevesGameSubsystem::UnregisterAllInterestInEnhancedInputActions()
+{
+    if (auto GI = GetGameInstance())
+    {
+        if (auto PC = GI->GetFirstLocalPlayerController())
+        {
+            if (auto EIC = Cast<UEnhancedInputComponent>(PC->InputComponent))
+            {
+            	TArray<uint32> HandlesToRemove;
+	            for (auto& Binding : EIC->GetActionEventBindings())
+	            {
+		            if (Binding->IsBoundToObject(this))
+		            {
+		            	HandlesToRemove.Add(Binding->GetHandle());
+		            }
+	            }
+
+            	for (const uint32 Handle : HandlesToRemove)
+            	{
+            		EIC->RemoveBindingByHandle(Handle);
+            	}
+            }
+        }
+    }
+    RegisteredEnhancedInputActionInterests.Empty();
 }
 
 void UStevesGameSubsystem::EnhancedInputActionTriggered(const FInputActionInstance& InputActionInstance)

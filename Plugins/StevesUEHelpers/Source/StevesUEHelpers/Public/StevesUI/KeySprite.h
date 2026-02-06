@@ -25,9 +25,9 @@ struct STEVESUEHELPERS_API FKeySprite : public FTableRowBase
     
 public:
 
-    UPROPERTY(EditAnywhere, BlueprintReadOnly)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="KeySprite")
     FKey Key;
 
-    UPROPERTY(EditAnywhere, BlueprintReadOnly)
-    UPaperSprite* Sprite = nullptr;
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="KeySprite")
+    TObjectPtr<UPaperSprite> Sprite = nullptr;
 };

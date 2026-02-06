@@ -18,7 +18,7 @@ class STEVESUEHELPERS_API UFocusablePanel : public UFocusableUserWidget
 public:
     /// The name of the widget which will be initially focussed by default
     /// This is a name because we can't link directly at edit time
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Focus")
     FName InitialFocusWidgetName;
 
     // I'd love to make the above a drop-down but it's a lot of faff
@@ -29,28 +29,35 @@ public:
      * @brief Set the current focus to the initial focus widget
      * @return Whether the focus was successfully set
      */
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, Category="Focus")
     bool SetFocusToInitialWidget();
 
     /**
      * @brief Get's the desired focus widget. Allows implementation in BP for dynamically generated menus
      * @return The initial focus widget
      */
-    UFUNCTION(BlueprintNativeEvent)
+    UFUNCTION(BlueprintNativeEvent, Category="Focus")
     UWidget* GetInitialFocusWidget();
+
+	/**
+     * @brief Set the desired initial focus widget. Call to set the initial widget dynamically without overriding GetInitialFocusWidget
+     * @param NewInitialFocus The initial focus widget
+     */
+    UFUNCTION(BlueprintCallable, Category="Focus")
+    void SetInitialFocusWidget(UWidget* NewInitialFocus);
     
     /**
      * @brief Try to restore focus to the previously focussed child
      * @return Whether the focus was successfully set
      */
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, Category="Focus")
     bool RestorePreviousFocus() const;
 
     /**
      * @brief Try to save the currently focussed child as something that can be restored later.
      * @return Whether focus was saved
      */
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, Category="Focus")
     bool SavePreviousFocus();
 
     
