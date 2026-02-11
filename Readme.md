@@ -2,23 +2,18 @@
 
 This is the example project for [SUDS Pro](https://www.unrealengine.com/marketplace/en-US/product/98046b91d2d4470f8c10db3589b3640e).
 
-## Using a Pre-built version
+## Steve's UE Helpers Plugin
 
-This example uses another one of my open source projects, [Steves UE Helpers](https://github.com/sinbad/StevesUEHelpers).
-So even though this example project is Blueprint-only, it does need to build this
-plugin. If you want to skip this step, download a pre-built example
- (Windows only).
+This example uses another one of my open source projects, "Steves UE Helpers", to provide convenient 
+features such as better gamepad support and a typewriter text widget. This plugin is open source, but is also 
+[provided for free on Fab](https://www.fab.com/listings/6a48c58c-1771-42f6-b46f-2b09e31b1699). 
 
- [Download Prebuilt Example](https://github.com/sinbad/SUDSProExample/releases)
+For convenience this example project uses the Fab version, which you'll need to install. The source code is also
+available for those who would prefer it.
 
-## Building From Source
+* [Steve's UE Helpers on Fab](https://www.fab.com/listings/6a48c58c-1771-42f6-b46f-2b09e31b1699)
+* [Steve's UE Helpers Source](https://github.com/sinbad/StevesUEHelpers).
 
-If you use the source release, when you open SudsProExample.uproject, you'll be prompted
-as follows:
-
-![Build prompt](BuildHelpersPrompt.png)
-
-Click Yes to build (you will need a Visual Studio C++ compiler installed).
 
 ## Documentation
 
