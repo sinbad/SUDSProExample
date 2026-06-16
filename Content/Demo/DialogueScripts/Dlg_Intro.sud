@@ -161,3 +161,16 @@
     * No
       Player: Actually, no.
       [goto mainchoices]
+
+
+:start2
+
+[event FadeOut]
+[event CharacterMove `Player`, `PlayerMark`]
+[event FadeIn]
+[event WaitFade]
+[event CharacterAnim `Manny`, `Wave`]
+
+Manny: Oh hi, this is a test of a second map!
+Manny: Not much to say I'm afraid.
+[goto end] 
